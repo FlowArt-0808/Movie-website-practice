@@ -10,6 +10,8 @@ import {
 
 export default function HeroSection() {
   return (
+
+    <div className="mb-[52px]">
     <Carousel className="w-full max-w-xs">
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
@@ -27,5 +29,6 @@ export default function HeroSection() {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
+    </div>
   );
 }
