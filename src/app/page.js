@@ -7,7 +7,7 @@ import Footer from "./_features/Footer";
 
 function Home() {
   return (
-    <div className="w-screen h-screen flex-col">
+    <div className="w-[1440px] h-screen flex-col">
       <Header />
       <HeroSection />
       <UpcomingMovieList />
