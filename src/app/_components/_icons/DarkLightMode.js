@@ -8,7 +8,7 @@ const DarkLightMode = (props) => (
     {...props}
   >
     <path
-      stroke="#18181B"
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       d="M6.5.5a4.243 4.243 0 1 0 6 6 6 6 0 1 1-6-6Z"

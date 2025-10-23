@@ -1,18 +1,17 @@
 import Header from "./_features/Header";
 import HeroSection from "./_features/home/HeroSection";
-import UpcomingMovieList from "./_features/home/UpcomingMovieList";
-import PopularMovieList from "./_features/home/PopularMovieList";
-import TopRatedMovieList from "./_features/home/TopRatedMoviesList";
+import MovieList from "./_features/home/MovieList";
 import Footer from "./_features/Footer";
 
 function Home() {
   return (
-    <div className="w-[1440px] h-screen flex-col">
+    <div className="w-[1440px] h-screen flex-col bg-white dark:bg-[#09090B] ">
       <Header />
       <HeroSection />
-      <UpcomingMovieList />
-      <PopularMovieList />
-      <TopRatedMovieList />
+      <MovieList />
+      <MovieList />
+      <MovieList />
+
       <Footer />
     </div>
   );

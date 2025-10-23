@@ -1,5 +1,5 @@
 import * as React from "react";
-const DownArrow = (props) => (
+const DownArrow = ({ classname, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={9}
@@ -8,7 +8,7 @@ const DownArrow = (props) => (
     {...props}
   >
     <path
-      stroke="#18181B"
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       d="m.5.5 4 4 4-4"
