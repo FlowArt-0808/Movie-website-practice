@@ -5,6 +5,7 @@ const GoldenStar = ({ className, ...props }) => (
     width={15}
     height={14}
     fill="none"
+    className={className}
     {...props}
   >
     <path

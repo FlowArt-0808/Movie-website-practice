@@ -47,7 +47,7 @@ export default function Header() {
           className="pt-2 pr-4 pb-2 pl-4 border-1 rounded-md "
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
-          <DarkLightMode className="stroke-[#18181B] dark:stroke-[#FAFAFA]" />
+          <DarkLightMode className="stroke-[#18181B] dark:stroke-[#FAFAFA] cursor-pointer" />
         </button>
       </div>
     </div>

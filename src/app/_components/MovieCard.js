@@ -17,7 +17,7 @@ const MovieCard = () => {
           id="Voting-Score-Section"
           className="flex gap-[5.33px] items-center"
         >
-          <GoldenStar className="stroke-[#FDE047] fill-[#FDE047] dark:stroke-[#FAFAFA] dark:fill-[#FAFAFA]" />
+          <GoldenStar className="dark:stroke-[#FAFAFA] dark:fill-[#FAFAFA] stroke-[##FDE047] fill-[##FDE047]" />
           <div
             id="Score"
             className="text-[#09090B] dark:text-[#FAFAFA] text-[14px]"
