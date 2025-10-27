@@ -1,18 +1,28 @@
-import MovieCard from "@/app/_components/MovieCard";
+"use client";
+
+import { MovieCard } from "@/app/_components/MovieCard";
 import RightArrow from "@/app/_components/_icons/RightArrow";
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
-export default function MovieList() {
-  const [movieData, setMovieData] = useState([]);
-  const getData = async () => {
-    const upcomingMovieEndpoint = `${BASE_URL}/movie/upcoming?language=en-US&page1`;
+export const MovieList = (props) => {
+  const { type } = props;
 
-    const response = await fetch(upcomingMovieEndpoint, {
+  const router = useRouter();
+
+  const [movieData, setMovieData] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  const getData = async () => {
+    const movieEndpoint = `${BASE_URL}/movie/${type}?language=en-US&page1`;
+
+    const response = await fetch(movieEndpoint, {
       headers: {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
         "Content-Type": "application/json",
@@ -24,12 +34,22 @@ export default function MovieList() {
 
     console.log(data, "datadatadata");
     setMovieData(data.results);
+
+    setLoading(false);
   };
 
   useEffect(() => {
     console.log(`page running once`);
     getData();
   }, []);
+
+  if (loading) {
+    return <div>false</div>;
+  }
+
+  const seeMoreButton = () => {
+    router.push(`/movies/${type}`);
+  };
 
   return (
     <div className="w-[1440px] flex flex-col pl-[80px] pr-[80px] mb-[52px]">
@@ -38,9 +58,12 @@ export default function MovieList() {
         className="mb-[36px] flex items-center justify-between"
       >
         <div className="text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA]">
-          Popular
+          {type}
         </div>
-        <button className="flex gap-2 items-center cursor-pointer">
+        <button
+          className="flex gap-2 items-center cursor-pointer"
+          onClick={seeMoreButton}
+        >
           <div className="text-[#09090B] text-[14px] font-[500] dark:text-[#FAFAFA]">
             {" "}
             See More
@@ -48,18 +71,18 @@ export default function MovieList() {
           <RightArrow className="stroke-[#09090b] dark:stroke-[#FAFAFA]" />
         </button>
       </div>
-      <div className="grid grid-col-5 gap 8 gap-[32px] ">
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
+      <div className="grid grid-cols-5 gap-x-32 gap-y-8 ">
+        {movieData.map((movie, index) => {
+          return (
+            <MovieCard
+              key={index}
+              movieName={movie.title}
+              score={movie.vote_average}
+              imageURL={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            />
+          );
+        })}
       </div>
     </div>
   );
-}
+};
