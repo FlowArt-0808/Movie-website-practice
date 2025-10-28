@@ -17,7 +17,7 @@ export const MovieCard = ({ movieName, imageURL, score }) => {
       >
         <div
           id="Voting-Score-Section"
-          className="flex gap-[5.33px] items-center"
+          className="flex gap-[5.33px] items-center h-[23px]"
         >
           <GoldenStar className="dark:stroke-[#FAFAFA] dark:fill-[#FAFAFA] stroke-[##FDE047] fill-[##FDE047]" />
           <div
@@ -31,7 +31,7 @@ export const MovieCard = ({ movieName, imageURL, score }) => {
         </div>
         <div
           id="Movie-Name"
-          className="text-[#09090B] dark:text-[#FAFAFA] text-[18px]"
+          className="text-[#09090B] dark:text-[#FAFAFA] text-[18px] h-[56px]"
         >
           {movieName}
         </div>

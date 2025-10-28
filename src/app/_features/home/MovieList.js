@@ -19,6 +19,8 @@ export const MovieList = (props) => {
 
   const [loading, setLoading] = useState(false);
 
+  const limit = 10;
+
   const getData = async () => {
     const movieEndpoint = `${BASE_URL}/movie/${type}?language=en-US&page1`;
 
@@ -48,7 +50,7 @@ export const MovieList = (props) => {
   }
 
   const seeMoreButton = () => {
-    router.push(`/movies/${type}`);
+    router.push(`/SeeMore/${type}`);
   };
 
   return (
@@ -57,7 +59,7 @@ export const MovieList = (props) => {
         id="subtitle for Popular"
         className="mb-[36px] flex items-center justify-between"
       >
-        <div className="text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA]">
+        <div className="text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA] capitalize">
           {type}
         </div>
         <button
@@ -72,7 +74,7 @@ export const MovieList = (props) => {
         </button>
       </div>
       <div className="grid grid-cols-5 gap-x-32 gap-y-8 ">
-        {movieData.map((movie, index) => {
+        {movieData.slice(0, limit).map((movie, index) => {
           return (
             <MovieCard
               key={index}

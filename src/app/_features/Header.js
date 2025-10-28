@@ -5,6 +5,14 @@ import DarkLightMode from "../_components/_icons/DarkLightMode";
 import DownArrow from "../_components/_icons/DownArrow";
 import Search from "../_components/_icons/Search";
 import { useTheme } from "next-themes";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const { theme, setTheme } = useTheme();
@@ -30,12 +38,14 @@ export default function Header() {
           id="Search and Dropdown"
           className="flex justify-between items-center gap-[12px]"
         >
-          <div className="flex gap-[12px] pt-2 pb-2 pr-4 pl-4 border-1 border-[#E4E4E7] dark:border-[#27272A] items-center rounded-md">
-            <DownArrow className="stroke-[##18181B] dark:stroke-[#FAFAFA]" />
-            <select className="" placeholder="Genre">
-              <option value="option1">Yo</option>
-              <option value="option2">Hello</option>
-            </select>
+          <div className="flex items-center gap-[8px] pl-4 pt-2 pr-4 pb-2 justify-center border-1 border-[#E4E4E7]  dark:border-[#27272A] rounded-md bg-">
+            <DownArrow className="" />
+            <DropdownMenu>
+              <DropdownMenuTrigger className="text-[#111111] dark:text-[#FAFAFA] ">
+                Genre
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>Dynamic</DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <div className="flex gap-[12.13px] border-1 border-[#E4E4E7] dark:border-[#27272A] items-center rounded-lg pr-3 pl-3">
             <Search />
