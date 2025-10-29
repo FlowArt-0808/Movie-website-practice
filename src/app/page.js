@@ -14,7 +14,9 @@ function Home() {
 
       <HeroSection />
       <MovieList type="upcoming" />
+
       <MovieList type="popular" />
+
       <MovieList type="top_rated" />
 
       <Footer />

@@ -3,7 +3,7 @@ export const MovieCard = ({ movieName, imageURL, score }) => {
   return (
     <div
       id="Outermost-Card-section"
-      className="w-[229.73px] h-[95px] flex flex-col rounded-lg"
+      className="w-[229.73px] h-[439px] flex flex-col rounded-lg"
     >
       <div
         id="Image-Section"

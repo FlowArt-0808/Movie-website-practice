@@ -12,7 +12,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  GenreCategory,
+  GenreCategories,
+  GenreMenu,
 } from "@/components/ui/dropdown-menu";
+import RightArrow from "../_components/_icons/RightArrow";
+import Genres from "../_components/Genres";
+
+const BASE_URL = "https://api.themoviedb.org/3";
 
 export default function Header() {
   const { theme, setTheme } = useTheme();
@@ -40,12 +47,19 @@ export default function Header() {
         >
           <div className="flex items-center gap-[8px] pl-4 pt-2 pr-4 pb-2 justify-center border-1 border-[#E4E4E7]  dark:border-[#27272A] rounded-md bg-">
             <DownArrow className="" />
-            <DropdownMenu>
-              <DropdownMenuTrigger className="text-[#111111] dark:text-[#FAFAFA] ">
-                Genre
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>Dynamic</DropdownMenuContent>
-            </DropdownMenu>
+            <GenreMenu>
+              <DropdownMenuTrigger>Genre</DropdownMenuTrigger>
+              <DropdownMenuContent className="h-[293px] w-[537px] flex flex-col border-1 dark:border-[#27272A] border-[#E4E4E7] rounded-lg p-[20px] bg-[#FFF] dark:bg-[#09090B]">
+                <DropdownMenuLabel>Genres</DropdownMenuLabel>
+                <DropdownMenuItem>See list of movies by genre</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <GenreCategories>
+                  <GenreCategory className="grid grod">
+                    Action <RightArrow className="stroke-[#FAFAFA]" />
+                  </GenreCategory>
+                </GenreCategories>
+              </DropdownMenuContent>
+            </GenreMenu>
           </div>
           <div className="flex gap-[12.13px] border-1 border-[#E4E4E7] dark:border-[#27272A] items-center rounded-lg pr-3 pl-3">
             <Search />
