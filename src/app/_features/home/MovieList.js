@@ -30,11 +30,9 @@ export const MovieList = (props) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response, "responseresponse");
 
     const data = await response.json();
 
-    console.log(data, "datadatadata");
     setMovieData(data.results);
 
     setLoading(false);
@@ -73,7 +71,7 @@ export const MovieList = (props) => {
           <RightArrow className="stroke-[#09090b] dark:stroke-[#FAFAFA]" />
         </button>
       </div>
-      <div className="grid grid-cols-5 gap-x-32 gap-y-8 ">
+      <div className="grid grid-cols-5 gap-x-8 gap-y-7 ">
         {movieData.slice(0, limit).map((movie, index) => {
           return (
             <MovieCard

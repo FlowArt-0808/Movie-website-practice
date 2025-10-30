@@ -1,7 +1,7 @@
 "use client";
 
-import Header from "./_features/Header";
-import HeroSection from "./_features/home/HeroSection";
+import { Header } from "./_features/Header";
+import { HeroSection } from "./_features/home/HeroSection";
 import { MovieList } from "./_features/home/MovieList";
 import Footer from "./_features/Footer";
 import { useState, useEffect } from "react";

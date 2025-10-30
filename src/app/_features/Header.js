@@ -21,7 +21,9 @@ import Genres from "../_components/Genres";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
-export default function Header() {
+const ACCESS_TOKEN = "";
+
+export const Header = () => {
   const { theme, setTheme } = useTheme();
   return (
     <div id="Navigation" className="px-20 w-[1440px] mb-6">
@@ -45,7 +47,7 @@ export default function Header() {
           id="Search and Dropdown"
           className="flex justify-between items-center gap-[12px]"
         >
-          <div className="flex items-center gap-[8px] pl-4 pt-2 pr-4 pb-2 justify-center border-1 border-[#E4E4E7]  dark:border-[#27272A] rounded-md bg-">
+          <div className="flex items-center gap-[8px] h-[36px] w- justify-center border-1 border-[#E4E4E7]  dark:border-[#27272A] rounded-md pr-4 pl-4 pt-2 pb-2">
             <DownArrow className="" />
             <GenreMenu>
               <DropdownMenuTrigger>Genre</DropdownMenuTrigger>
@@ -54,26 +56,26 @@ export default function Header() {
                 <DropdownMenuItem>See list of movies by genre</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <GenreCategories>
-                  <GenreCategory className="grid grod">
+                  <GenreCategory className="grid">
                     Action <RightArrow className="stroke-[#FAFAFA]" />
                   </GenreCategory>
                 </GenreCategories>
               </DropdownMenuContent>
             </GenreMenu>
           </div>
-          <div className="flex gap-[12.13px] border-1 border-[#E4E4E7] dark:border-[#27272A] items-center rounded-lg pr-3 pl-3">
+          <div className="flex gap-[12.13px] border-1 border-[#E4E4E7] dark:border-[#27272A] items-center rounded-lg pr-3 pl-3 h-[36px] w-[355px]">
             <Search />
             <input type="search" placeholder="Search.."></input>
           </div>
         </div>
         <button
           id="Swith Mode"
-          className="pt-2 pr-4 pb-2 pl-4 border-1 rounded-md "
+          className="flex items-center justify-center h-[36px] w-[36px] border-1 rounded-md cursor-pointer"
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
-          <DarkLightMode className="stroke-[#18181B] dark:stroke-[#FAFAFA] cursor-pointer" />
+          <DarkLightMode className="stroke-[#18181B] dark:stroke-[#FAFAFA]" />
         </button>
       </div>
     </div>
   );
-}
+};
