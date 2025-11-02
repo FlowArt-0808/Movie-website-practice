@@ -7,7 +7,7 @@ export const MovieCard = ({ movieName, imageURL, score }) => {
     >
       <div
         id="Image-Section"
-        className="w-[229.73px] h-[340px]  bg-[#F4F4F5] dark:bg-[#27272A]"
+        className="hover:brightness-75 duration-400 w-[229.73px] h-[340px]  bg-[#F4F4F5] dark:bg-[#27272A] cursor-pointer"
       >
         <img src={imageURL} alt={movieName} />
       </div>

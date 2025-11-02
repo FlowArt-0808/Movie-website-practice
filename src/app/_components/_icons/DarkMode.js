@@ -1,5 +1,5 @@
 import * as React from "react";
-const DarkLightMode = (props) => (
+const DarkMode = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={13}
@@ -15,4 +15,4 @@ const DarkLightMode = (props) => (
     />
   </svg>
 );
-export default DarkLightMode;
+export default DarkMode;

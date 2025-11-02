@@ -1,10 +1,11 @@
 "use client";
 
 import { MovieCard } from "@/app/_components/MovieCard";
-import RightArrow from "@/app/_components/_icons/RightArrow";
+import SeeMoreRightArrow from "@/app/_components/_icons/SeeMoreRightArrow";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import RightArrow from "@/app/_components/_icons/RightArrow";
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const ACCESS_TOKEN =
@@ -60,15 +61,16 @@ export const MovieList = (props) => {
         <div className="text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA] capitalize">
           {type}
         </div>
+        
         <button
           className="flex gap-2 items-center cursor-pointer"
           onClick={seeMoreButton}
         >
-          <div className="text-[#09090B] text-[14px] font-[500] dark:text-[#FAFAFA]">
+          <div className="text-[#09090B] text-[14px] font-[500] dark:text-[#FAFAFA] hover:underline underline-offset-3">
             {" "}
             See More
           </div>
-          <RightArrow className="stroke-[#09090b] dark:stroke-[#FAFAFA]" />
+          <SeeMoreRightArrow className="stroke-[#09090b] fill-[#09090b] dark:stroke-[#FAFAFA] dark:fill-[#FAFAFA]" />
         </button>
       </div>
       <div className="grid grid-cols-5 gap-x-8 gap-y-7 ">

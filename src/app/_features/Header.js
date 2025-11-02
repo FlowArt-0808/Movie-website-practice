@@ -1,7 +1,7 @@
 "use client";
 
 import BlueMovieIcon from "../_components/_icons/BlueMovieIcon";
-import DarkLightMode from "../_components/_icons/DarkLightMode";
+import DarkMode from "../_components/_icons/DarkMode";
 import DownArrow from "../_components/_icons/DownArrow";
 import Search from "../_components/_icons/Search";
 import { useTheme } from "next-themes";
@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import RightArrow from "../_components/_icons/RightArrow";
 import Genres from "../_components/Genres";
+import LightMode from "@/app/_components/_icons/LightMode"
+
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
@@ -47,7 +49,7 @@ export const Header = () => {
           id="Search and Dropdown"
           className="flex justify-between items-center gap-[12px]"
         >
-          <div className="flex items-center gap-[8px] h-[36px] w- justify-center border-1 border-[#E4E4E7]  dark:border-[#27272A] rounded-md pr-4 pl-4 pt-2 pb-2">
+          <div className="flex items-center gap-[8px] h-[36px]  justify-center border-1 border-[#E4E4E7]  dark:border-[#27272A] rounded-md pr-4 pl-4 pt-2 pb-2 hover:bg-[#E4E4E7] dark:hover:bg-[#27272A]">
             <DownArrow className="" />
             <GenreMenu>
               <DropdownMenuTrigger>Genre</DropdownMenuTrigger>
@@ -73,7 +75,8 @@ export const Header = () => {
           className="flex items-center justify-center h-[36px] w-[36px] border-1 rounded-md cursor-pointer"
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
-          <DarkLightMode className="stroke-[#18181B] dark:stroke-[#FAFAFA]" />
+          {theme === "light" && <DarkMode/>}
+          {theme === "dark" && <LightMode/>}
         </button>
       </div>
     </div>

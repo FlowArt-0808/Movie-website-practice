@@ -6,6 +6,8 @@ import { MovieList } from "./_features/home/MovieList";
 import Footer from "./_features/Footer";
 import { useState, useEffect } from "react";
 import React from "react";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton'
 
 function Home() {
   return (
