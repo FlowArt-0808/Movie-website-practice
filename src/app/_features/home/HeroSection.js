@@ -80,6 +80,7 @@ export const HeroSection = ({ movieName, imageURL }) => {
                         </div>
                       </button>
                     </div>
+                    <button className="grid grid-rows-3 "></button>
                   </CardContent>
                 </Card>
               </CarouselItem>
