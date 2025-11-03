@@ -49,9 +49,9 @@ export const HeroSection = ({ movieName, imageURL }) => {
   return (
     <div className="mb-[52px]">
       <Carousel className="w-full ">
-        {loading ? (
+        {loading ? 
           <Skeleton className="w-full h-[600px]" />
-        ) : (
+         : 
           <CarouselContent>
             {Array.from({ length: 3 }).map((_, index) => (
               <CarouselItem key={index} className="w-full h-[600px]">
@@ -73,7 +73,7 @@ export const HeroSection = ({ movieName, imageURL }) => {
                         </div>
                       </div>
                       <div id="Movie Description"></div>
-                      <button className="flex items-center rounded-md pt-2 pb-2 pr-2 pl-4 bg-[#F4F4F5] gap-[8px]">
+                      <button className="flex items-center rounded-md pt-2 pb-2 pr-2 pl-4 bg-[#F4F4F5] gap-[8px] hover:opacity-70 duration-100">
                         <PlayButton />
                         <div className="font-[500] text-[14px] text-[#18181B]">
                           Watch Trailer
@@ -86,7 +86,7 @@ export const HeroSection = ({ movieName, imageURL }) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-        )}
+        }
 
         <CarouselPrevious />
         <CarouselNext />

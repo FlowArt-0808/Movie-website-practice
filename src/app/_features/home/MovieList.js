@@ -6,6 +6,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import RightArrow from "@/app/_components/_icons/RightArrow";
+import Skeleton from "react-loading-skeleton";
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const ACCESS_TOKEN =
@@ -18,7 +19,7 @@ export const MovieList = (props) => {
 
   const [movieData, setMovieData] = useState([]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const limit = 10;
 
@@ -44,9 +45,6 @@ export const MovieList = (props) => {
     getData();
   }, []);
 
-  if (loading) {
-    return <div>false</div>;
-  }
 
   const seeMoreButton = () => {
     router.push(`/SeeMore/${type}`);
@@ -54,7 +52,8 @@ export const MovieList = (props) => {
 
   return (
     <div className="w-[1440px] flex flex-col pl-[80px] pr-[80px] mb-[52px]">
-      <div
+     
+        <div
         id="subtitle for Popular"
         className="mb-[36px] flex items-center justify-between"
       >
@@ -73,18 +72,20 @@ export const MovieList = (props) => {
           <SeeMoreRightArrow className="stroke-[#09090b] fill-[#09090b] dark:stroke-[#FAFAFA] dark:fill-[#FAFAFA]" />
         </button>
       </div>
+    
       <div className="grid grid-cols-5 gap-x-8 gap-y-7 ">
         {movieData.slice(0, limit).map((movie, index) => {
           return (
             <MovieCard
               key={index}
               movieName={movie.title}
-              score={movie.vote_average}
+              score={movie.vote_average.toFixed(1)}
               imageURL={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             />
           );
         })}
       </div>
+
     </div>
   );
 };
