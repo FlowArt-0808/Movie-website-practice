@@ -18,8 +18,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import RightArrow from "../_components/_icons/RightArrow";
 import Genres from "../_components/Genres";
-import LightMode from "@/app/_components/_icons/LightMode"
-
+import LightMode from "@/app/_components/_icons/LightMode";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
@@ -75,8 +76,8 @@ export const Header = () => {
           className="flex items-center justify-center h-[36px] w-[36px] border-1 rounded-md cursor-pointer"
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
-          {theme === "light" && <DarkMode/>}
-          {theme === "dark" && <LightMode/>}
+          {theme === "light" && <DarkMode />}
+          {theme === "dark" && <LightMode />}
         </button>
       </div>
     </div>

@@ -1,9 +1,22 @@
-import { test } from "/"
 
 
-import test from "/"
+const getMovieVideos = async () => {
 
 
-export default BlueMovieIcon = (props) => ()
+}
 
-export function () {}
+
+useEffect(() => {
+    getMovieVideos()
+    
+},  [selectedMovieId]
+
+const handleWatchTrailerButton = (id) => {
+  setSelectedMovieId(id);
+};
+
+setMovieTrailer(data);
+setTrailerLoading(false);
+
+<div>
+{selectedMovieId && !trailerLoading && <div>trailer loading</div>}</div>
