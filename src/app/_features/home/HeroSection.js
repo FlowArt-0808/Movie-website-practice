@@ -19,7 +19,12 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
-export const HeroSection = ({ movieName, imageURL }) => {
+export const HeroSection = ({
+  movieName,
+  imageURL,
+  rating,
+  movieDescription,
+}) => {
   const [movieData, setMovieData] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -36,6 +41,8 @@ export const HeroSection = ({ movieName, imageURL }) => {
 
     const data = await response.json();
 
+    console.log(`HeroSectionData`, data);
+
     setMovieData(data.results);
 
     setLoading(false);
@@ -49,9 +56,9 @@ export const HeroSection = ({ movieName, imageURL }) => {
   return (
     <div className="mb-[52px]">
       <Carousel className="w-full ">
-        {loading ? 
+        {loading ? (
           <Skeleton className="w-full h-[600px]" />
-         : 
+        ) : (
           <CarouselContent>
             {Array.from({ length: 3 }).map((_, index) => (
               <CarouselItem key={index} className="w-full h-[600px]">
@@ -59,20 +66,20 @@ export const HeroSection = ({ movieName, imageURL }) => {
                   <CardContent>
                     <div
                       id="Now Playing Movie Images"
-                      className="w-full h-full flex flex-col gap-[16px] justify-center items-start"
+                      className="w-full h-full flex flex-col gap-[16px] justify-center items-start bg-[{imageURL}]"
                     >
                       <div className="text-[16px] font-[400]">Now Playing</div>
-                      <div className="text-[36px] font-[700]">2</div>
+                      <div className="text-[36px] font-[700]">{movieName}</div>
                       <div className="flex items-center">
                         <NowPlayingGoldenStar />
                         <div className="flex items-center">
-                          <div className="font-[600] text-[18px]">6.9</div>
+                          <div className="font-[600] text-[18px]">{rating}</div>
                           <div className="text-[#71717A] font-[400] text-[16px]">
                             /10
                           </div>
                         </div>
                       </div>
-                      <div id="Movie Description"></div>
+                      <div id="Movie Description">{movieDescription}</div>
                       <button className="flex items-center rounded-md pt-2 pb-2 pr-2 pl-4 bg-[#F4F4F5] gap-[8px] hover:opacity-70 duration-100">
                         <PlayButton />
                         <div className="font-[500] text-[14px] text-[#18181B]">
@@ -86,7 +93,7 @@ export const HeroSection = ({ movieName, imageURL }) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-        }
+        )}
 
         <CarouselPrevious />
         <CarouselNext />

@@ -26,10 +26,10 @@ const BASE_URL = "https://api.themoviedb.org/3";
 
 const ACCESS_TOKEN = "";
 
-export const Header = () => {
+const Header = () => {
   const { theme, setTheme } = useTheme();
   return (
-    <div id="Navigation" className="px-20 w-[1440px] mb-6">
+    <div id="Navigation" className="pl-4 pr-4 w-[1440px] mb-[24px]">
       <div
         id="Navigation Items"
         className=" flex justify-between items-center mt-[11.5px] mb-[11.5px]"
@@ -50,7 +50,7 @@ export const Header = () => {
           id="Search and Dropdown"
           className="flex justify-between items-center gap-[12px]"
         >
-          <div className="flex items-center gap-[8px] h-[36px]  justify-center border-1 border-[#E4E4E7]  dark:border-[#27272A] rounded-md pr-4 pl-4 pt-2 pb-2 hover:bg-[#E4E4E7] dark:hover:bg-[#27272A]">
+          {/* <div className="flex items-center gap-[8px] h-[36px]  justify-center border-1 border-[#E4E4E7]  dark:border-[#27272A] rounded-md pr-4 pl-4 pt-2 pb-2 hover:bg-[#E4E4E7] dark:hover:bg-[#27272A]">
             <DownArrow className="" />
             <GenreMenu>
               <DropdownMenuTrigger>Genre</DropdownMenuTrigger>
@@ -65,7 +65,29 @@ export const Header = () => {
                 </GenreCategories>
               </DropdownMenuContent>
             </GenreMenu>
-          </div>
+          </div> */}
+
+          <GenreMenu>
+            <DropdownMenuTrigger asChild>
+              {/* CHATGPT, requires further examining and learning how it's wrapped */}
+              <div className="flex items-center gap-[8px] h-[36px] justify-center border border-[#E4E4E7] dark:border-[#27272A] rounded-md px-4 py-2 hover:bg-[#E4E4E7] dark:hover:bg-[#27272A] cursor-pointer">
+                <DownArrow className="" />
+                <span>Genre</span>
+              </div>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="h-[293px] w-[537px] flex flex-col border dark:border-[#27272A] border-[#E4E4E7] rounded-lg p-[20px] bg-[#FFF] dark:bg-[#09090B]">
+              <DropdownMenuLabel>Genres</DropdownMenuLabel>
+              <DropdownMenuItem>See list of movies by genre</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <GenreCategories>
+                <GenreCategory className="grid">
+                  Action <RightArrow className="stroke-[#FAFAFA]" />
+                </GenreCategory>
+              </GenreCategories>
+            </DropdownMenuContent>
+          </GenreMenu>
+
           <div className="flex gap-[12.13px] border-1 border-[#E4E4E7] dark:border-[#27272A] items-center rounded-lg pr-3 pl-3 h-[36px] w-[355px]">
             <Search />
             <input type="search" placeholder="Search.."></input>
@@ -83,3 +105,4 @@ export const Header = () => {
     </div>
   );
 };
+export default Header;
