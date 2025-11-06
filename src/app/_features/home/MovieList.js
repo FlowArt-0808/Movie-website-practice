@@ -13,7 +13,7 @@ const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
 export const MovieList = (props) => {
-  const { type, movieId } = props;
+  const { type } = props;
 
   const router = useRouter();
 
@@ -35,17 +35,20 @@ export const MovieList = (props) => {
         "Content-Type": "application/json",
       },
     });
-    // const response2 = await fetch(movieIdEndPoint, {
+       const data = await response.json();
+       console.log("MovieList Data", data);
+   
+       // const response2 = await fetch(movieIdEndPoint, {
     //   headers: {
     //     Authorization: `Bearer ${ACCESS_TOKEN}`,
     //     "Content-Type": "application/json",
     //   },
     // });
 
-    const data = await response.json();
-    const IdData = await response2.json();
 
-    console.log("MovieList Data", data);
+    // const IdData = await response2.json();
+
+
     // console.log(`Movie ID`, data)
 
     setMovieData(data.results);
@@ -58,10 +61,12 @@ export const MovieList = (props) => {
     getData();
   }, []);
 
-  //
-  const seeMoreButton = () => {
+
+
+  const handleSeeMoreButton = () => {
     router.push(`/SeeMore/${type}`);
   };
+
 
   return (
     <div className="w-[1440px] flex flex-col pl-[80px] pr-[80px] mb-[52px]">
@@ -75,7 +80,7 @@ export const MovieList = (props) => {
 
         <button
           className="flex gap-2 items-center cursor-pointer"
-          onClick={seeMoreButton}
+          onClick={handleSeeMoreButton}
         >
           <div className="text-[#09090B] text-[14px] font-[500] dark:text-[#FAFAFA] hover:underline underline-offset-3">
             {" "}
@@ -90,6 +95,7 @@ export const MovieList = (props) => {
           return (
             <MovieCard
               key={index}
+              movieId={movie.id}  
               movieName={movie.title}
               score={movie.vote_average.toFixed(1)}
               imageURL={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}

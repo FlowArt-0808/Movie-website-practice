@@ -1,7 +1,14 @@
 import GoldenStar from "./_icons/GoldenStar";
-export const MovieCard = ({ movieName, imageURL, score }) => {
+import { useRouter } from "next/navigation";
+export const MovieCard = ({ movieName, imageURL, score, movieId }) => {
+  
+  const router = useRouter()
+    const handleMovieDetails = () => {
+    router.push(`/MovieDetails/${movieId}`)
+  }
   return (
     <div
+    onClick={handleMovieDetails}
       id="Outermost-Card-section"
       className="w-[229.73px] h-[439px] flex flex-col rounded-lg overflow-hidden"
     >

@@ -2,7 +2,7 @@ import SilverMovieIcon from "../_components/_icons/SilverMovieIcon";
 import Email from "../_components/_icons/Email";
 import Phone from "../_components/_icons/Phone";
 
-export default function Footer() {
+const  Footer = () => {
   return (
     <div className=" bg-indigo-700 w-[1440px] h-[280px]">
       <div className="flex justify-between pt-[40px] pb-[40px] pl-[80px] pr-[80px]">
@@ -57,7 +57,10 @@ export default function Footer() {
             </div>
           </div>
         </div>
+        
       </div>
     </div>
   );
 }
+
+export default Footer

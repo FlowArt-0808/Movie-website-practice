@@ -20,66 +20,68 @@ const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
 export const HeroSection = ({
-  movieName,
-  imageURL,
-  rating,
-  movieDescription,
+  vote_average,
+  original_title,
+  overview
 }) => {
-  const [movieData, setMovieData] = useState([]);
+  const [movieNowPlayingData, setNowPlayingMovieData] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
-  const getData = async () => {
-    const moviesOnTheatreEndpoint = `${BASE_URL}/movie/now_playing?language=en-US&page1`;
+  const getNowPlayingData = async () => {
+    const moviesOnTheatreEndpoint = `${BASE_URL}/movie/now_playing?language=en-US&page=1`;
 
-    const response = await fetch(moviesOnTheatreEndpoint, {
+    const responseNowPlaying = await fetch(moviesOnTheatreEndpoint, {
       headers: {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
         "Content-Type": "application/json",
       },
     });
 
-    const data = await response.json();
+    const nowPlayingData = await responseNowPlaying.json();
 
-    console.log(`HeroSectionData`, data);
+    console.log(`HeroSectionData`, nowPlayingData);
 
-    setMovieData(data.results);
+    setNowPlayingMovieData(nowPlayingData.results);
 
     setLoading(false);
   };
 
   useEffect(() => {
     console.log(`page running once`);
-    getData();
+    getNowPlayingData();
   }, []);
 
   return (
     <div className="mb-[52px]">
-      <Carousel className="w-full ">
+      <Carousel className="w-full animate-pulse">
         {loading ? (
           <Skeleton className="w-full h-[600px]" />
         ) : (
           <CarouselContent>
-            {Array.from({ length: 3 }).map((_, index) => (
-              <CarouselItem key={index} className="w-full h-[600px]">
-                <Card className="flex aspect-square flex-col w-full h-[600px]">
+            {movieNowPlayingData.slice (0, 3).map((movie, index) => (
+              <CarouselItem key={movie.id || index} className="w-full h-[600px]">
+                <Card className="flex aspect-square flex-col w-full h-[600px]"
+                style={{
+  backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+}}>
                   <CardContent>
                     <div
                       id="Now Playing Movie Images"
-                      className="w-full h-full flex flex-col gap-[16px] justify-center items-start bg-[{imageURL}]"
+                      className="w-full h-full flex flex-col gap-[16px] justify-center items-start"
                     >
                       <div className="text-[16px] font-[400]">Now Playing</div>
-                      <div className="text-[36px] font-[700]">{movieName}</div>
+                      <div className="text-[36px] font-[700]">{movie.original_title}</div>
                       <div className="flex items-center">
                         <NowPlayingGoldenStar />
                         <div className="flex items-center">
-                          <div className="font-[600] text-[18px]">{rating}</div>
+                          <div className="font-[600] text-[18px]">{movie.vote_average}</div>
                           <div className="text-[#71717A] font-[400] text-[16px]">
                             /10
                           </div>
                         </div>
                       </div>
-                      <div id="Movie Description">{movieDescription}</div>
+                      <div id="Movie Description">{movie.overview}</div>
                       <button className="flex items-center rounded-md pt-2 pb-2 pr-2 pl-4 bg-[#F4F4F5] gap-[8px] hover:opacity-70 duration-100">
                         <PlayButton />
                         <div className="font-[500] text-[14px] text-[#18181B]">
