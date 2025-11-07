@@ -27,7 +27,6 @@ export const MovieList = (props) => {
 
   const getData = async () => {
     const movieEndpoint = `${BASE_URL}/movie/${type}?language=en-US&page1`;
-    // const movieIdEndPoint = `${BASE_URL}/movie/${movieId}?language=en-US`;
 
     const response = await fetch(movieEndpoint, {
       headers: {
@@ -35,21 +34,8 @@ export const MovieList = (props) => {
         "Content-Type": "application/json",
       },
     });
-       const data = await response.json();
-       console.log("MovieList Data", data);
-   
-       // const response2 = await fetch(movieIdEndPoint, {
-    //   headers: {
-    //     Authorization: `Bearer ${ACCESS_TOKEN}`,
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-
-
-    // const IdData = await response2.json();
-
-
-    // console.log(`Movie ID`, data)
+    const data = await response.json();
+    console.log("MovieList Data", data);
 
     setMovieData(data.results);
 
@@ -61,12 +47,9 @@ export const MovieList = (props) => {
     getData();
   }, []);
 
-
-
   const handleSeeMoreButton = () => {
     router.push(`/SeeMore/${type}`);
   };
-
 
   return (
     <div className="w-[1440px] flex flex-col pl-[80px] pr-[80px] mb-[52px]">
@@ -95,7 +78,7 @@ export const MovieList = (props) => {
           return (
             <MovieCard
               key={index}
-              movieId={movie.id}  
+              movieId={movie.id}
               movieName={movie.title}
               score={movie.vote_average.toFixed(1)}
               imageURL={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}

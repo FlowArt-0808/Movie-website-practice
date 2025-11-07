@@ -19,11 +19,7 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
-export const HeroSection = ({
-  vote_average,
-  original_title,
-  overview
-}) => {
+export const HeroSection = () => {
   const [movieNowPlayingData, setNowPlayingMovieData] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -59,23 +55,32 @@ export const HeroSection = ({
           <Skeleton className="w-full h-[600px]" />
         ) : (
           <CarouselContent>
-            {movieNowPlayingData.slice (0, 3).map((movie, index) => (
-              <CarouselItem key={movie.id || index} className="w-full h-[600px]">
-                <Card className="flex aspect-square flex-col w-full h-[600px]"
-                style={{
-  backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
-}}>
+            {movieNowPlayingData.slice(0, 3).map((movie, index) => (
+              <CarouselItem
+                key={movie.id || index}
+                className="w-full h-[600px]"
+              >
+                <Card
+                  className="flex aspect-square flex-col w-full h-[600px]"
+                  style={{
+                    backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+                  }}
+                >
                   <CardContent>
                     <div
                       id="Now Playing Movie Images"
                       className="w-full h-full flex flex-col gap-[16px] justify-center items-start"
                     >
                       <div className="text-[16px] font-[400]">Now Playing</div>
-                      <div className="text-[36px] font-[700]">{movie.original_title}</div>
+                      <div className="text-[36px] font-[700]">
+                        {movie.original_title}
+                      </div>
                       <div className="flex items-center">
                         <NowPlayingGoldenStar />
                         <div className="flex items-center">
-                          <div className="font-[600] text-[18px]">{movie.vote_average}</div>
+                          <div className="font-[600] text-[18px]">
+                            {movie.vote_average.toFixed(0)}
+                          </div>
                           <div className="text-[#71717A] font-[400] text-[16px]">
                             /10
                           </div>

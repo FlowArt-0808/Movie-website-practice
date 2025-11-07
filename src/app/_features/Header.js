@@ -5,29 +5,42 @@ import DarkMode from "../_components/_icons/DarkMode";
 import DownArrow from "../_components/_icons/DownArrow";
 import Search from "../_components/_icons/Search";
 import { useTheme } from "next-themes";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  GenreCategory,
-  GenreCategories,
-  GenreMenu,
-} from "@/components/ui/dropdown-menu";
-import RightArrow from "../_components/_icons/RightArrow";
-import Genres from "../_components/Genres";
+
 import LightMode from "@/app/_components/_icons/LightMode";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Badge } from "@/components/ui/badge";
+import React, { useEffect, useState } from "react";
+import { Genres } from "../_components/Genres";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
-const ACCESS_TOKEN = "";
+const ACCESS_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
+  const [genre, setGenre] = useState([]);
+
+  const getGenreData = async () => {
+    const genreEndpont = `${BASE_URL}/genre/movie/list?language=en`;
+
+    const responseGenreData = await fetch(genreEndpont, {
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const genreData = await responseGenreData.json();
+    console.log(`GenreData`, genreData);
+    setGenre(genreData.results);
+  };
+
+  useEffect(() => {
+    console.log(`skibidi`);
+    getGenreData();
+  }, []);
+
   return (
     <div id="Navigation" className="pl-4 pr-4 w-[1440px] mb-[24px]">
       <div
@@ -50,43 +63,7 @@ const Header = () => {
           id="Search and Dropdown"
           className="flex justify-between items-center gap-[12px]"
         >
-          {/* <div className="flex items-center gap-[8px] h-[36px]  justify-center border-1 border-[#E4E4E7]  dark:border-[#27272A] rounded-md pr-4 pl-4 pt-2 pb-2 hover:bg-[#E4E4E7] dark:hover:bg-[#27272A]">
-            <DownArrow className="" />
-            <GenreMenu>
-              <DropdownMenuTrigger>Genre</DropdownMenuTrigger>
-              <DropdownMenuContent className="h-[293px] w-[537px] flex flex-col border-1 dark:border-[#27272A] border-[#E4E4E7] rounded-lg p-[20px] bg-[#FFF] dark:bg-[#09090B]">
-                <DropdownMenuLabel>Genres</DropdownMenuLabel>
-                <DropdownMenuItem>See list of movies by genre</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <GenreCategories>
-                  <GenreCategory className="grid">
-                    Action <RightArrow className="stroke-[#FAFAFA]" />
-                  </GenreCategory>
-                </GenreCategories>
-              </DropdownMenuContent>
-            </GenreMenu>
-          </div> */}
-
-          <GenreMenu>
-            <DropdownMenuTrigger asChild>
-              {/* CHATGPT, requires further examining and learning how it's wrapped */}
-              <div className="flex items-center gap-[8px] h-[36px] justify-center border border-[#E4E4E7] dark:border-[#27272A] rounded-md px-4 py-2 hover:bg-[#E4E4E7] dark:hover:bg-[#27272A] cursor-pointer">
-                <DownArrow className="" />
-                <span>Genre</span>
-              </div>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent className="h-[293px] w-[537px] flex flex-col border dark:border-[#27272A] border-[#E4E4E7] rounded-lg p-[20px] bg-[#FFF] dark:bg-[#09090B]">
-              <DropdownMenuLabel>Genres</DropdownMenuLabel>
-              <DropdownMenuItem>See list of movies by genre</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <GenreCategories>
-                <GenreCategory className="grid">
-                  Action <RightArrow className="stroke-[#FAFAFA]" />
-                </GenreCategory>
-              </GenreCategories>
-            </DropdownMenuContent>
-          </GenreMenu>
+          <Genres />
 
           <div className="flex gap-[12.13px] border-1 border-[#E4E4E7] dark:border-[#27272A] items-center rounded-lg pr-3 pl-3 h-[36px] w-[355px]">
             <Search />
