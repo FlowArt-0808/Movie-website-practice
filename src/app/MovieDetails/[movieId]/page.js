@@ -18,6 +18,7 @@ const MovieDetails = (props) => {
   const { type, movieId } = props;
   const [movieData, setMovieData] = useState([]);
   const [movieIdData, setMovieIdData] = useState([]);
+  const [creditsData, setCreditsData] = useState({})
 
   const [loading, setLoading] = useState(true);
   const getMovieIdData = async () => {
@@ -47,14 +48,20 @@ const MovieDetails = (props) => {
     });
 
     const data = await response.json();
-
     setMovieData(data.results);
-
     setLoading(false);
   };
-
   const getCreditsData = async () => {
     const creditsEndPoint = `${BASE_URL}/movie/${id}/credits?language=en-US`;
+
+    const responseCreditsData = await fetch (creditsEndPoint, {
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`, "Content-Type": "application/json"
+      }
+    })
+const creditsData = await response.json ()
+setCreditsData(creditsData.results)
+
   };
 
   useEffect(() => {
