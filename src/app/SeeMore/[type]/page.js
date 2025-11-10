@@ -44,14 +44,18 @@ const SeeMore = (props) => {
     setLoading(false);
   };
 
+  const handlePageIncrease = () => {
+    setPage(+2);
+  };
+
+  const handlePageDecrease = () => {
+    setPage(-2);
+  };
+
   useEffect(() => {
     console.log(`page running once`);
     getData();
   }, []);
-
-  const handlePage = () => {
-    setPage(+1);
-  };
 
   return (
     <div className="relative flex flex-col">
@@ -91,7 +95,7 @@ const SeeMore = (props) => {
             <PaginationEllipsis />
           </PaginationItem>
           <PaginationItem>
-            <PaginationNext href="#" />
+            <PaginationNext href="#" onClick={handlePageIncrease} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

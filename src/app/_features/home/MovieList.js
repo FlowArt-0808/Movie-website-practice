@@ -4,7 +4,7 @@ import { MovieCard } from "@/app/_components/MovieCard";
 import SeeMoreRightArrow from "@/app/_components/_icons/SeeMoreRightArrow";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import RightArrow from "@/app/_components/_icons/RightArrow";
 import Skeleton from "react-loading-skeleton";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -22,8 +22,6 @@ export const MovieList = (props) => {
   const [loading, setLoading] = useState(true);
 
   const limit = 10;
-
-  // Copied from video, requires further examining and learning it
 
   const getData = async () => {
     const movieEndpoint = `${BASE_URL}/movie/${type}?language=en-US&page1`;

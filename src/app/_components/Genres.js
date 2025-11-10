@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import DownArrow from "./_icons/DownArrow";
-import { Badge } from "@/components/ui/badge";
+import Badge from "./Badge";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
