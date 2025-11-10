@@ -41,29 +41,22 @@ const SeeMore = (props) => {
 
     setMovieData(data.results);
 
-    setLoading(false);
   };
 
-  const handlePageIncrease = () => {
-    setPage(+2);
-  };
 
-  const handlePageDecrease = () => {
-    setPage(-2);
-  };
 
   useEffect(() => {
-    console.log(`page running once`);
+    console.log(`1234`);
     getData();
-  }, []);
+  }, [page]);
 
   return (
     <div className="relative flex flex-col">
       <Header />
-      <div className="w-[1440px] flex flex-col pl-[80px] pr-[80px] mb-[52px]">
+      <div className="w-[1440px] flex flex-col pl-20 pr-20 mb-[52px]">
         <div
           id="subtitle for Popular"
-          className="mb-[36px] flex items-center justify-between"
+          className="mb-9 flex items-center justify-between"
         >
           <div className="text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA] capitalize">
             {parameter.type}
@@ -83,22 +76,30 @@ const SeeMore = (props) => {
           })}
         </div>
       </div>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" onClick={handlePageIncrease} />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+       <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          {/* <PaginationPrevious href="#" onClick={() =>setPage((p) => Math.max(p - 1, 1))} /> */}
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#" isActive>
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          {/* <PaginationNext href="#" onClick={setPage((p) =>Math.max (p+1))} /> */}
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
       <Footer />
     </div>
   );

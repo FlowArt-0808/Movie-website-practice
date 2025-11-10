@@ -50,43 +50,41 @@ export const HeroSection = () => {
 
   return (
     <div className="mb-[52px]">
-      <Carousel className="w-full animate-pulse">
-        {loading ? (
-          <Skeleton className="w-full h-[600px]" />
-        ) : (
+      <Carousel className="w-full">
+    
           <CarouselContent>
             {movieNowPlayingData.slice(0, 3).map((movie, index) => (
               <CarouselItem
                 key={movie.id || index}
-                className="w-full h-[600px]"
+
               >
                 <Card
-                  className="flex aspect-square flex-col w-full h-[600px]"
+                  className="flex aspect-square flex-col w-full h-[600px] bg-center bg-cover"
                   style={{
                     backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
                   }}
                 >
-                  <CardContent>
+                  
                     <div
-                      id="Now Playing Movie Images"
-                      className="w-full h-full flex flex-col gap-[16px] justify-center items-start"
+                      id="Every content"
+                      className="w-101 h-full flex flex-col gap-[16px]  items-start pl-35 pb-[158px] pt-[178px]"
                     >
-                      <div className="text-[16px] font-[400]">Now Playing</div>
-                      <div className="text-[36px] font-[700]">
+                      <div className="text-[16px] font-[400] text-[#FFFFFF]">Now Playing</div>
+                      <div className="text-[36px] font-[700] text-[#FFFFFF]">
                         {movie.original_title}
                       </div>
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-[4px]">
                         <NowPlayingGoldenStar />
                         <div className="flex items-center">
-                          <div className="font-[600] text-[18px]">
-                            {movie.vote_average.toFixed(0)}
+                          <div className="font-[600] text-[18px] text-[#FFFFFF]">
+                            {movie.vote_average.toFixed(1)}
                           </div>
                           <div className="text-[#71717A] font-[400] text-[16px]">
                             /10
                           </div>
                         </div>
                       </div>
-                      <div id="Movie Description">{movie.overview}</div>
+                      <div id="Movie Description" className="text-[#FFFFFF] font-[300]">{movie.overview}</div>
                       <button className="flex items-center rounded-md pt-2 pb-2 pr-2 pl-4 bg-[#F4F4F5] gap-[8px] hover:opacity-70 duration-100">
                         <PlayButton />
                         <div className="font-[500] text-[14px] text-[#18181B]">
@@ -95,12 +93,12 @@ export const HeroSection = () => {
                       </button>
                     </div>
                     <button className="grid grid-rows-3 "></button>
-                  </CardContent>
+                  
                 </Card>
               </CarouselItem>
             ))}
           </CarouselContent>
-        )}
+        
 
         <CarouselPrevious />
         <CarouselNext />
