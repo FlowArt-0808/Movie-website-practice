@@ -8,12 +8,13 @@ import { useParams, useRouter } from "next/navigation";
 import RightArrow from "@/app/_components/_icons/RightArrow";
 import Skeleton from "react-loading-skeleton";
 const BASE_URL = "https://api.themoviedb.org/3";
+import SkeletonCard from "@/app/_components/SkeletonCard";
 
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
 
 export const MovieList = (props) => {
-  const { type, movieId } = props;
+  const { type, title } = props;
 
   const router = useRouter();
 
@@ -56,7 +57,7 @@ export const MovieList = (props) => {
         className="mb-[36px] flex items-center justify-between"
       >
         <div className="text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA] capitalize">
-          {type}
+          {title}
         </div>
 
         <button
@@ -70,6 +71,8 @@ export const MovieList = (props) => {
           <SeeMoreRightArrow className="stroke-[#09090b] fill-[#09090b] dark:stroke-[#FAFAFA] dark:fill-[#FAFAFA]" />
         </button>
       </div>
+
+      <SkeletonCard />
 
       <div className="grid grid-cols-5 gap-x-8 gap-y-7 ">
         {movieData.slice(0, limit).map((movie, index) => {

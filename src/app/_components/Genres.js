@@ -23,7 +23,7 @@ const ACCESS_TOKEN =
 
 export const Genres = (props) => {
   const type = { props };
-  const genreCategoryLimit = 17;
+  const genreCategoryLimit = 27;
 
   const [genreDataForBadge, setGenre] = useState([]);
 

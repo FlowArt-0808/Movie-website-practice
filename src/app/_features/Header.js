@@ -11,6 +11,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { Badge } from "@/components/ui/badge";
 import React, { useEffect, useState } from "react";
 import { Genres } from "../_components/Genres";
+import { useRouter } from "next/navigation";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
@@ -19,27 +20,7 @@ const ACCESS_TOKEN =
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
-  const [genre, setGenre] = useState([]);
-
-  const getGenreData = async () => {
-    const genreEndpont = `${BASE_URL}/genre/movie/list?language=en`;
-
-    const responseGenreData = await fetch(genreEndpont, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const genreData = await responseGenreData.json();
-    console.log(`GenreData`, genreData);
-    setGenre(genreData.results);
-  };
-
-  useEffect(() => {
-    console.log(`skibidi`);
-    getGenreData();
-  }, []);
+  const router = useRouter();
 
   return (
     <div id="Navigation" className="pl-4 pr-4 w-[1440px] mb-[24px]">

@@ -9,21 +9,21 @@ import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton";
 
-function Home() {
+const Home = () => {
   return (
     <div className="w-[1440px] h-screen flex-col bg-white dark:bg-[#09090B] ">
       <Header />
 
       <HeroSection />
-      <MovieList type="upcoming" />
+      <MovieList title={`Upcoming`} type="upcoming" />
 
-      <MovieList type="popular" />
+      <MovieList title={`Popular`} type="popular" />
 
-      <MovieList type="top_rated" />
+      <MovieList title={`Top Rated`} type="top_rated" />
 
       <Footer />
     </div>
   );
-}
+};
 
 export default Home;

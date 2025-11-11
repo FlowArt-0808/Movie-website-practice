@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import SeeMoreRightArrow from "@/app/_components/_icons/SeeMoreRightArrow";
 
+import MovieDetailsGoldenStar from "@/app/_components/_icons/MovieDetailsGoldenStar";
+
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const ACCESS_TOKEN =
@@ -14,16 +16,16 @@ const ACCESS_TOKEN =
 
 // setYData(x.results) vs setYData(x)
 
-const MovieDetails = ({original_title}) => {
-  const parameterId = useParams()
+const MovieDetails = ({ original_title }) => {
+  const parameterId = useParams();
   const movieDetailsLimit = 5;
   const [movieData, setMovieData] = useState([]);
   const [movieIdData, setMovieIdData] = useState([]);
-  const [creditsData, setCreditsData] = useState({})
+  const [creditsData, setCreditsData] = useState({});
 
-//   const director = creditsData.crew.filter(person => person.known_for_department === "Directing") [0]
-//   const writers = creditsData.crew.filter(person => person.known_for_department === "Writing").slice(0,3)
-// const stars= creditsData.crew.slice(0,3)
+  //   const director = creditsData.crew.filter(person => person.known_for_department === "Directing") [0]
+  //   const writers = creditsData.crew.filter(person => person.known_for_department === "Writing").slice(0,3)
+  // const stars= creditsData.crew.slice(0,3)
 
   const [loading, setLoading] = useState(true);
   const getMovieIdData = async () => {
@@ -59,15 +61,18 @@ const MovieDetails = ({original_title}) => {
   const getCreditsData = async () => {
     const creditsEndPoint = `${BASE_URL}/movie/${parameterId.movieId}/credits?language=en-US`;
 
-    const responseCreditsData = await fetch (creditsEndPoint, {
+    const responseCreditsData = await fetch(creditsEndPoint, {
       headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`, "Content-Type": "application/json"
-      }
-    })
-const creditsData = await responseCreditsData.json ()
-setCreditsData(creditsData)
-console.log ("Credits DataCredits DataCredits DataCredits Data", creditsData)
-
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const creditsData = await responseCreditsData.json();
+    setCreditsData(creditsData);
+    console.log(
+      "Credits DataCredits DataCredits DataCredits Data",
+      creditsData
+    );
   };
 
   useEffect(() => {
@@ -84,14 +89,17 @@ console.log ("Credits DataCredits DataCredits DataCredits Data", creditsData)
       <Header />
       <div id="Every-content" className="flex flex-col pl-20 pr-20">
         <div id="Info about the movie">
-          <div id="Movie name, release date, duration">{movieIdData.original_title}</div>
+          <div id="Movie name, release date, duration">
+            {movieIdData.original_title}
+          </div>
           <div id="Rating, votecount">
+            <MovieDetailsGoldenStar className="text-[#FDE047] dark:text-[#FAFAFA]" />
             <div>{movieIdData.vote_average}</div>
             <div>{movieIdData.vote_count}</div>
           </div>
         </div>
         <div id="Movie poster and trailer">
-          <div id="Movie poster"></div>
+          <div id="Movie poster"> </div>
           <div id="Movie trailer"></div>
         </div>
         <div id="Badges about the movie"></div>
