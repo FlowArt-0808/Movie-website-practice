@@ -11,7 +11,7 @@ import "react-loading-skeleton";
 
 const Home = () => {
   return (
-    <div className="w-[1440px] h-screen flex-col bg-white dark:bg-[#09090B] ">
+    <div className="w-full h-screen flex-col bg-white dark:bg-[#09090B] ">
       <Header />
 
       <HeroSection />

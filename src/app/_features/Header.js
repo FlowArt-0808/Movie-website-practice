@@ -23,25 +23,25 @@ const Header = () => {
   const router = useRouter();
 
   return (
-    <div id="Navigation" className="pl-4 pr-4 w-[1440px] mb-[24px]">
+    <div aria-label="Navigation" className="pl-4 pr-4  mb-[24px]">
       <div
-        id="Navigation Items"
+        aria-label="Navigation Items"
         className=" flex justify-between items-center mt-[11.5px] mb-[11.5px]"
       >
         <div
-          id="Text and movie icon"
+          aria-label="Text and movie icon"
           className="gap-[9.67px] flex justify-between items-center"
         >
           <BlueMovieIcon />
-          <div className="italic text-[#4338CA] text-[16px] font-[700]">
+          <p className="italic text-[#4338CA] text-[16px] font-[700]">
             Movie{" "}
             <span className="italic text-[#4338CA] text-[16px] font-[700]">
               Z
             </span>
-          </div>
+          </p>
         </div>
         <div
-          id="Search and Dropdown"
+          aria-label="Search and Dropdown"
           className="flex justify-between items-center gap-[12px]"
         >
           <Genres />
@@ -52,7 +52,7 @@ const Header = () => {
           </div>
         </div>
         <button
-          id="Swith Mode"
+          aria-label="Swith Mode"
           className="flex items-center justify-center h-[36px] w-[36px] border-1 rounded-md cursor-pointer"
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >

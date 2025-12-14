@@ -1,0 +1,8 @@
+Fetching data from server and use it
+
+Use import components from online libraries to build website
+
+Learned to use async/await code lines. Async code line will activate once await code runs
+
+
+

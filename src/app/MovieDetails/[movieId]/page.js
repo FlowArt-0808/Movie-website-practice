@@ -3,133 +3,119 @@
 import Header from "@/app/_features/Header";
 import { MovieCard } from "@/app/_components/MovieCard";
 import Footer from "@/app/_features/Footer";
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
 import SeeMoreRightArrow from "@/app/_components/_icons/SeeMoreRightArrow";
-
+import { useMovieDetailsContext } from "@/app/_provider/movieDetailsProvider";
 import MovieDetailsGoldenStar from "@/app/_components/_icons/MovieDetailsGoldenStar";
 
-const BASE_URL = "https://api.themoviedb.org/3";
-
-const ACCESS_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
-
-// setYData(x.results) vs setYData(x)
-
-const MovieDetails = ({ original_title }) => {
-  const parameterId = useParams();
+const MovieDetails = () => {
   const movieDetailsLimit = 5;
-  const [movieData, setMovieData] = useState([]);
-  const [movieIdData, setMovieIdData] = useState([]);
-  const [creditsData, setCreditsData] = useState({});
 
-  //   const director = creditsData.crew.filter(person => person.known_for_department === "Directing") [0]
-  //   const writers = creditsData.crew.filter(person => person.known_for_department === "Writing").slice(0,3)
-  // const stars= creditsData.crew.slice(0,3)
-
-  const [loading, setLoading] = useState(true);
-  const getMovieIdData = async () => {
-    const movieIdEndPoint = `${BASE_URL}/movie/${parameterId.movieId}?language=en-US`;
-
-    const responseMovieId = await fetch(movieIdEndPoint, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const movieIdData = await responseMovieId.json();
-    console.log("MovieID DATA", movieIdData);
-
-    setMovieIdData(movieIdData);
-  };
-
-  // const getData = async () => {
-  //   const movieEndpoint = `${BASE_URL}/movie/${parameter.type}?language=en-US&page=${page}`;
-
-  //   const response = await fetch(movieEndpoint, {
-  //     headers: {
-  //       Authorization: `Bearer ${ACCESS_TOKEN}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-
-  //   const data = await response.json();
-  //   setMovieData(data.results);
-  //   setLoading(false);
-  // };
-  const getCreditsData = async () => {
-    const creditsEndPoint = `${BASE_URL}/movie/${parameterId.movieId}/credits?language=en-US`;
-
-    const responseCreditsData = await fetch(creditsEndPoint, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-    const creditsData = await responseCreditsData.json();
-    setCreditsData(creditsData);
-    console.log(
-      "Credits DataCredits DataCredits DataCredits Data",
-      creditsData
-    );
-  };
-
-  useEffect(() => {
-    console.log(`page running once`);
-    getMovieIdData(), getCreditsData();
-  }, []);
-
-  const handleSeeMoreButton = () => {
-    router.push(`/SeeMore/${type}`);
-  };
+  const {
+    getMovieIdData,
+    getCreditsData,
+    numberFormatter,
+    creditsData,
+    movieIdData,
+    durationHour,
+    durationMinutes,
+    handleSeeMoreButton,
+    movieData,
+  } = useMovieDetailsContext();
 
   return (
     <div>
       <Header />
-      <div id="Every-content" className="flex flex-col pl-20 pr-20">
-        <div id="Info about the movie">
-          <div id="Movie name, release date, duration">
-            {movieIdData.original_title}
+      <div
+        aria-label="Every-content"
+        className="flex flex-col gap-8 pl-20 pr-20 w-full"
+      >
+        <div aria-label="Movie name and poster" className="flex flex-col gap-6">
+          {" "}
+          <div
+            aria-label="Info about the movie"
+            className="flex justify-between"
+          >
+            <div
+              aria-label="Movie name, release date, duration"
+              className="flex flex-col"
+            >
+              <p className="text-[36px] text-[#09090B] font-bold dark:text-[#FAFAFA]">
+                {" "}
+                {movieIdData.original_title}
+              </p>
+              <div aria-label="" className="flex">
+                <p className="text-[18px] text-[#09090B] font-normal dark:text-[#FAFAFA]">
+                  {movieIdData.release_date} ·‎{" "}
+                </p>
+                <span className="text-[18px] text-[#09090B] dark:text-[#FAFAFA]">
+                  ‎ {durationHour}h <span>{durationMinutes}m</span>
+                </span>
+              </div>
+            </div>
+            <div aria-label="Rating, votecount">
+              <MovieDetailsGoldenStar className="text-[#FDE047] dark:text-[#FAFAFA]" />
+              <p className="text-[18px] font-bold text-[#09090B] dark:text-[#FAFAFA]">
+                {movieIdData.vote_average}
+                <span className="text-[16px] text-[#71717a]">/10</span>{" "}
+              </p>
+              <p className="text-[12px] text-[#A1A1AA]">
+                {numberFormatter()} votes
+              </p>
+            </div>
           </div>
-          <div id="Rating, votecount">
-            <MovieDetailsGoldenStar className="text-[#FDE047] dark:text-[#FAFAFA]" />
-            <div>{movieIdData.vote_average}</div>
-            <div>{movieIdData.vote_count}</div>
+          <div aria-label="Movie poster and trailer" className="flex gap-8">
+            <div
+              aria-label="Movie poster"
+              className="w-[290px] h-107 border border-amber-200"
+            >
+              {" "}
+            </div>
+            <div
+              aria-label="Movie trailer"
+              className="h-107 w-190 border border-amber-200"
+            ></div>
           </div>
         </div>
-        <div id="Movie poster and trailer">
-          <div id="Movie poster"> </div>
-          <div id="Movie trailer"></div>
-        </div>
-        <div id="Badges about the movie"></div>
-        <div id="Movie Description">{movieIdData.overview}</div>
-        <div id="Movie-cast">
-          {/* <div id="Director">{director}</div>
+        <div
+          aria-label="Genres, cast information"
+          className="flex flex-col gap-5"
+        >
+          {" "}
+          <div aria-label="Badges about the movie"></div>
+          <p
+            aria-label="Movie Description"
+            className="text-[16px] text-[#09090B] dark:text-[#FAFAFA]"
+          >
+            {movieIdData.overview}
+          </p>
+          <div aria-label="Movie-cast">
+            {/* <div id="Director">{director}</div>
           <div id="Writers">{writers}</div>
           <div id="Stars">{stars}</div> */}
+          </div>
         </div>
-        <div id="Movie Card Section" className="flex flex-col">
+
+        <div aria-label="Movie Card Section" className="flex flex-col">
           <div
-            id="More Like This and See More"
+            aria-label="More Like This and See More"
             className="mb-9 flex items-center justify-between"
           >
-            <div className="text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA] capitalize">
+            <p className="text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA] capitalize">
               More Like This
-            </div>
+            </p>
 
             <button
               className="flex gap-2 items-center cursor-pointer"
-              onClick={handleSeeMoreButton}
+              // onClick={() => handleSeeMoreButton}
             >
-              <div className="text-[#09090B] text-[14px] font-medium dark:text-[#FAFAFA] hover:underline underline-offset-3">
+              <p className="text-[#09090B] text-[14px] font-medium dark:text-[#FAFAFA] hover:underline underline-offset-3">
                 {" "}
                 See More
-              </div>
+              </p>
               <SeeMoreRightArrow className="stroke-[#09090b] fill-[#09090b] dark:stroke-[#FAFAFA] dark:fill-[#FAFAFA]" />
             </button>
           </div>
-          <div className="grid grid-cols-5 ">
+          {/* <div className="grid grid-cols-5 ">
             {movieData.slice(0, movieDetailsLimit).map((movie, index) => {
               return (
                 <MovieCard
@@ -140,7 +126,7 @@ const MovieDetails = ({ original_title }) => {
                 />
               );
             })}
-          </div>
+          </div> */}
         </div>
       </div>
       <Footer />

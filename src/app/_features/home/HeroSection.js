@@ -12,97 +12,82 @@ import NowPlayingGoldenStar from "@/app/_components/_icons/NowPlayingGoldenStar"
 
 import PlayButton from "@/app/_components/_icons/PlayButton";
 import { useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
-
-const BASE_URL = "https://api.themoviedb.org/3";
-
-const ACCESS_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
+import { useHomePageContext } from "@/app/_provider/homeProvider";
+import { The_Girl_Next_Door } from "next/font/google";
+import { useTheme } from "next-themes";
 
 export const HeroSection = () => {
-  const [movieNowPlayingData, setNowPlayingMovieData] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-
-  const getNowPlayingData = async () => {
-    const moviesOnTheatreEndpoint = `${BASE_URL}/movie/now_playing?language=en-US&page=1`;
-
-    const responseNowPlaying = await fetch(moviesOnTheatreEndpoint, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const nowPlayingData = await responseNowPlaying.json();
-
-    console.log(`HeroSectionData`, nowPlayingData);
-
-    setNowPlayingMovieData(nowPlayingData.results);
-
-    setLoading(false);
-  };
-
+  const { theme } = useTheme();
+  const { getNowPlayingData, movieNowPlayingData, loading } =
+    useHomePageContext();
   useEffect(() => {
-    console.log(`page running once`);
+    console.log(`Hero Section Data`);
     getNowPlayingData();
   }, []);
 
   return (
     <div className="mb-[52px]">
-      <Carousel className="w-full">
-    
+      {loading ? (
+        <div
+          className={`w-full h-150 ${
+            theme === "dark" ? "bg-[#27272a]" : "bg-[#f4f4f5]"
+          }`}
+        ></div>
+      ) : (
+        <Carousel className="w-full">
           <CarouselContent>
             {movieNowPlayingData.slice(0, 3).map((movie, index) => (
-              <CarouselItem
-                key={movie.id || index}
-
-              >
+              <CarouselItem key={movie.id || index}>
                 <Card
-                  className="flex aspect-square flex-col w-full h-[600px] bg-center bg-cover"
+                  className="flex aspect-square flex-col w-full h-[600px] bg-center bg-cover rounded-none"
                   style={{
                     backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
                   }}
                 >
-                  
-                    <div
-                      id="Every content"
-                      className="w-101 h-full flex flex-col gap-[16px]  items-start pl-35 pb-[158px] pt-[178px]"
-                    >
-                      <div className="text-[16px] font-[400] text-[#FFFFFF]">Now Playing</div>
-                      <div className="text-[36px] font-[700] text-[#FFFFFF]">
-                        {movie.original_title}
+                  <div
+                    aria-label="Every content"
+                    className="w-101 h-full flex flex-col gap-[16px]  items-start pl-35 pb-[158px] pt-[178px]"
+                  >
+                    <p className="text-[16px] font-[400] text-[#FFFFFF]">
+                      Now Playing
+                    </p>
+                    <p className="text-[36px] font-[700] text-[#FFFFFF]">
+                      {movie.original_title}
+                    </p>
+                    <div className="flex items-center gap-[4px]">
+                      <NowPlayingGoldenStar />
+                      <div className="flex items-center">
+                        <p className="font-[600] text-[18px] text-[#FFFFFF]">
+                          {movie.vote_average.toFixed(1)}
+                        </p>
+                        <p className="text-[#71717A] font-[400] text-[16px]">
+                          /10
+                        </p>
                       </div>
-                      <div className="flex items-center gap-[4px]">
-                        <NowPlayingGoldenStar />
-                        <div className="flex items-center">
-                          <div className="font-[600] text-[18px] text-[#FFFFFF]">
-                            {movie.vote_average.toFixed(1)}
-                          </div>
-                          <div className="text-[#71717A] font-[400] text-[16px]">
-                            /10
-                          </div>
-                        </div>
-                      </div>
-                      <div id="Movie Description" className="text-[#FFFFFF] font-[300]">{movie.overview}</div>
-                      <button className="flex items-center rounded-md pt-2 pb-2 pr-2 pl-4 bg-[#F4F4F5] gap-[8px] hover:opacity-70 duration-100">
-                        <PlayButton />
-                        <div className="font-[500] text-[14px] text-[#18181B]">
-                          Watch Trailer
-                        </div>
-                      </button>
                     </div>
-                    <button className="grid grid-rows-3 "></button>
-                  
+                    <p
+                      aria-label="Movie Description"
+                      className="text-[#FFFFFF] font-[300]"
+                    >
+                      {movie.overview}
+                    </p>
+                    <button className="flex items-center rounded-md pt-2 pb-2 pr-2 pl-4 bg-[#F4F4F5] gap-[8px] hover:opacity-70 duration-100">
+                      <PlayButton />
+                      <p className="font-[500] text-[14px] text-[#18181B]">
+                        Watch Trailer
+                      </p>
+                    </button>
+                  </div>
+                  <button className="grid grid-rows-3 "></button>
                 </Card>
               </CarouselItem>
             ))}
           </CarouselContent>
-        
 
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      )}
     </div>
   );
 };

@@ -2,35 +2,41 @@ import SilverMovieIcon from "../_components/_icons/SilverMovieIcon";
 import Email from "../_components/_icons/Email";
 import Phone from "../_components/_icons/Phone";
 
-const  Footer = () => {
+const Footer = () => {
   return (
-    <div className=" bg-indigo-700 w-[1440px] h-[280px]">
+    <div className=" bg-indigo-700 w-full h-[280px]">
       <div className="flex justify-between pt-[40px] pb-[40px] pl-[80px] pr-[80px]">
-        <div id="Left-footer-section" className="flex flex-col gap-y-[12px] ">
+        <div
+          aria-label="Left-footer-section"
+          className="flex flex-col gap-y-[12px] "
+        >
           <div className="flex gap-2 items-center">
             <SilverMovieIcon />
-            <div className="italic text-[#FAFAFA] text-[16px] font-[700]">
+            <p className="italic text-[#FAFAFA] text-[16px] font-[700]">
               Movie{" "}
               <span className="italic text-[#FAFAFA] text-[16px] font-[700]">
                 Z
               </span>
-            </div>
+            </p>
           </div>
-          <div className="text-[#FAFAFA] text-[14px]">
+          <p className="text-[#FAFAFA] text-[14px]">
             © 2024 Movie Z. All Rights Reserved.
-          </div>
+          </p>
         </div>
 
-        <div id="Right-footer-section" className="flex gap-[96px]">
-          <div id="Contact-information" className="flex flex-col gap-[24px]">
+        <div aria-label="Right-footer-section" className="flex gap-[96px]">
+          <div
+            aria-label="Contact-information"
+            className="flex flex-col gap-[24px]"
+          >
             <div
-              id="Email-information"
+              aria-label="Email-information"
               className="flex items-center gap-[12px]"
             >
               <Email />
               <div className="flex flex-col text-[#FAFAFA] text-[14px]">
-                <div>Email:</div>
-                <div>support@movieZ.com</div>
+                <p>Email:</p>
+                <p>support@movieZ.com</p>
               </div>
             </div>
             <div
@@ -39,16 +45,16 @@ const  Footer = () => {
             >
               <Phone />
               <div className="flex flex-col text-[#FAFAFA] text-[14px]">
-                <div>Phone:</div>
-                <div>+976 (11) 123-4567</div>
+                <p>Phone:</p>
+                <p>+976 (11) 123-4567</p>
               </div>
             </div>
           </div>
           <div
-            id="Social-Media-section"
+            aria-label="Social-Media-section"
             className="flex flex-col gap-[12px] text-[#FAFAFA]"
           >
-            <div>Follow us</div>
+            <p>Follow us</p>
             <div className="flex gap-[12px] font-[500] ">
               <span>Facebook</span>
               <span>Instagram</span>
@@ -57,10 +63,9 @@ const  Footer = () => {
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   );
-}
+};
 
-export default Footer
+export default Footer;
