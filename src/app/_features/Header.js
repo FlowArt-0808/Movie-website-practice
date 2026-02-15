@@ -5,12 +5,12 @@ import DarkMode from "../_components/_icons/DarkMode";
 import Search from "../_components/_icons/Search";
 import { useTheme } from "next-themes";
 import LightMode from "@/app/_components/_icons/LightMode";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Genres } from "../_components/Genres";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getPosterUrl, tmdbFetch } from "@/lib/tmdb";
 
-const Header = () => {
+const HeaderContent = () => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
@@ -232,6 +232,14 @@ const Header = () => {
         </button>
       </div>
     </div>
+  );
+};
+
+const Header = () => {
+  return (
+    <Suspense fallback={<div className="px-4 md:px-8 lg:px-20 mb-6 h-[62px]" />}>
+      <HeaderContent />
+    </Suspense>
   );
 };
 

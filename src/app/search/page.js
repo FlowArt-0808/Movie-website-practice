@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Header from "@/app/_features/Header";
 import Footer from "@/app/_features/Footer";
@@ -8,7 +8,7 @@ import { MovieCard } from "@/app/_components/MovieCard";
 import Skeleton from "react-loading-skeleton";
 import { tmdbFetch, getPosterUrl } from "@/lib/tmdb";
 
-const SearchPage = () => {
+const SearchPageContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = (searchParams.get("q") || "").trim();
@@ -118,6 +118,14 @@ const SearchPage = () => {
       </main>
       <Footer />
     </div>
+  );
+};
+
+const SearchPage = () => {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white dark:bg-[#09090B]" />}>
+      <SearchPageContent />
+    </Suspense>
   );
 };
 
