@@ -6,26 +6,25 @@ import * as React from "react";
 import { useEffect } from "react";
 import { useHomePageContext } from "@/app/_provider/homeProvider";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { useTheme } from "next-themes";
+import { getPosterUrl } from "@/lib/tmdb";
 export const MovieList = (props) => {
   const { title, type } = props;
-  const { theme } = useTheme();
 
-  const { movieData, getData, handleSeeMoreButton, loading } =
+  const { movieData, getData, handleSeeMoreButton, loadingByType } =
     useHomePageContext();
 
   const limit = 10;
   useEffect(() => {
-    console.log(`This is type`, type);
     getData(type);
   }, [type]);
 
   const specificMovieDataType = movieData[type] || [];
+  const isLoading = loadingByType[type];
   return (
-    <div className="w-full flex flex-col  pl-[80px] pr-[80px] mb-[52px]">
-      <div className="mb-[36px] flex items-center justify-between">
-        <p className="text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA] capitalize">
+    <div className="w-full flex flex-col px-4 md:px-8 lg:px-20 mb-10 md:mb-[52px]">
+      <div className="max-w-[1240px] mx-auto w-full">
+      <div className="mb-6 md:mb-[36px] flex items-center justify-between">
+        <p className="text-[22px] md:text-[24px] text-[#09090B] font-semibold dark:text-[#FAFAFA] capitalize">
           {title || <Skeleton />}
         </p>
 
@@ -41,13 +40,11 @@ export const MovieList = (props) => {
         </button>
       </div>
 
-      <div className="grid grid-cols-5 gap-x-8 gap-y-7 ">
-        {loading ? (
-          <Skeleton
-            width={230}
-            height={439}
-            baseColor={theme === "dark" ? "#27272A" : "#F4F4F5"}
-          />
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-x-8 md:gap-y-7 justify-items-center">
+        {isLoading ? (
+          Array.from({ length: limit }).map((_, index) => (
+            <Skeleton key={index} className="w-[170px] md:w-[230px] h-[360px] md:h-[439px]" />
+          ))
         ) : (
           specificMovieDataType.slice(0, limit).map((movie, index) => {
             return (
@@ -55,12 +52,13 @@ export const MovieList = (props) => {
                 key={index}
                 movieId={movie.id}
                 movieName={movie.title}
-                score={movie.vote_average.toFixed(1)}
-                imageURL={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                score={movie.vote_average?.toFixed(1)}
+                imageURL={getPosterUrl(movie.poster_path)}
               />
             );
           })
         )}
+      </div>
       </div>
     </div>
   );

@@ -6,12 +6,10 @@ import { MovieList } from "./_features/home/MovieList";
 import Footer from "./_features/Footer";
 import { useState, useEffect } from "react";
 import React from "react";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton";
 
 const Home = () => {
   return (
-    <div className="w-full h-screen flex-col bg-white dark:bg-[#09090B] ">
+    <div className="w-full min-h-screen flex-col bg-white dark:bg-[#09090B] ">
       <Header />
 
       <HeroSection />

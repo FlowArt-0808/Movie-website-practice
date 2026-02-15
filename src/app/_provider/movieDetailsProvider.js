@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
-import React from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
+import { tmdbFetch } from "@/lib/tmdb";
 
 const MovieDetailsContext = createContext(null);
 
@@ -20,19 +20,22 @@ export const useMovieDetailsContext = () => {
 };
 
 export const MovieDetailsProvider = ({ children }) => {
-  const BASE_URL = "https://api.themoviedb.org/3";
-
-  const ACCESS_TOKEN =
-    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
-
+  const router = useRouter();
   const parameterId = useParams();
-  const [movieIdData, setMovieIdData] = useState([]);
-  const [creditsData, setCreditsData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [movieIdData, setMovieIdData] = useState({});
+  const [creditsData, setCreditsData] = useState({ cast: [], crew: [] });
+  const [recommendationData, setRecommendationData] = useState([]);
+  const [trailerKey, setTrailerKey] = useState("");
 
-  const durationHour = Math.floor(movieIdData.runtime / 60);
-  const durationMinutes = movieIdData.runtime % 60;
+  const runtime = movieIdData.runtime || 0;
+  const durationHour = Math.floor(runtime / 60);
+  const durationMinutes = runtime % 60;
 
   const numberFormatter = () => {
+    if (!movieIdData.vote_count) {
+      return 0;
+    }
     if (movieIdData.vote_count < 1000) {
       return movieIdData.vote_count;
     } else if (movieIdData.vote_count < 1000000) {
@@ -42,54 +45,90 @@ export const MovieDetailsProvider = ({ children }) => {
     }
   };
 
-  const getMovieIdData = async () => {
-    const movieIdEndPoint = `${BASE_URL}/movie/${parameterId.movieId}?language=en-US`;
-
-    const responseMovieId = await fetch(movieIdEndPoint, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const movieIdData = await responseMovieId.json();
-    console.log("MovieID DATA", movieIdData);
-
-    setMovieIdData(movieIdData);
+  const handleSeeMoreButton = (type) => {
+    router.push(`/SeeMore/${type}`);
   };
-  const getCreditsData = async () => {
-    const creditsEndPoint = `${BASE_URL}/movie/${parameterId.movieId}/credits?language=en-US`;
 
-    const responseCreditsData = await fetch(creditsEndPoint, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-    const creditsData = await responseCreditsData.json();
-    setCreditsData(creditsData);
-    console.log(
-      "Credits DataCredits DataCredits DataCredits Data",
-      creditsData
-    );
+  const getMovieDetailsData = async () => {
+    setLoading(true);
+    try {
+      const movieId = parameterId.movieId;
+      const [movieData, credits, recommendations, similar, videos] =
+        await Promise.all([
+        tmdbFetch(`/movie/${movieId}`, { language: "en-US" }),
+        tmdbFetch(`/movie/${movieId}/credits`, { language: "en-US" }),
+        tmdbFetch(`/movie/${movieId}/recommendations`, { language: "en-US" }),
+        tmdbFetch(`/movie/${movieId}/similar`, { language: "en-US" }),
+        tmdbFetch(`/movie/${movieId}/videos`, { language: "en-US" }),
+        ]);
+
+      setMovieIdData(movieData || {});
+      setCreditsData(credits || { cast: [], crew: [] });
+      const recommendationsList = recommendations.results || [];
+      const similarList = similar.results || [];
+
+      let combined = [...recommendationsList, ...similarList];
+      combined = combined.filter(
+        (movie, index, arr) =>
+          movie?.id &&
+          movie.id !== movieId &&
+          arr.findIndex((item) => item.id === movie.id) === index
+      );
+
+      if (combined.length < 5) {
+        try {
+          const popular = await tmdbFetch("/movie/popular", {
+            language: "en-US",
+            page: 1,
+          });
+          const popularList = popular.results || [];
+          combined = [...combined, ...popularList]
+            .filter(
+              (movie, index, arr) =>
+                movie?.id &&
+                movie.id !== movieId &&
+                arr.findIndex((item) => item.id === movie.id) === index
+            )
+            .slice(0, 20);
+        } catch (error) {
+          console.error("Error fetching popular fallback movies:", error);
+        }
+      }
+
+      setRecommendationData(combined);
+
+      const trailer =
+        videos.results?.find(
+          (video) => video.type === "Trailer" && video.site === "YouTube"
+        ) || videos.results?.find((video) => video.site === "YouTube");
+      setTrailerKey(trailer?.key || "");
+    } catch (error) {
+      console.error("Error fetching movie details:", error);
+      setMovieIdData({});
+      setCreditsData({ cast: [], crew: [] });
+      setRecommendationData([]);
+      setTrailerKey("");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    console.log(`page running once`);
-    getMovieIdData(), getCreditsData();
-  }, []);
+    getMovieDetailsData();
+  }, [parameterId.movieId]);
 
   return (
     <MovieDetailsContext.Provider
       value={{
-        getMovieIdData,
-        getCreditsData,
+        loading,
         numberFormatter,
-        // movieData,
         movieIdData,
         creditsData,
+        recommendationData,
+        trailerKey,
         durationHour,
         durationMinutes,
+        handleSeeMoreButton,
       }}
     >
       {children}

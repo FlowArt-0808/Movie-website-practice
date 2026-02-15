@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { tmdbFetch } from "@/lib/tmdb";
 const SeeMoreContext = createContext(null);
 
 export const useSeeMoreContext = () => {
@@ -15,39 +16,46 @@ export const useSeeMoreContext = () => {
 };
 
 export const SeeMoreProvider = ({ children }) => {
-  const BASE_URL = "https://api.themoviedb.org/3";
-
-  const ACCESS_TOKEN =
-    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
   const parameter = useParams();
   const [movieData, setMovieData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const getData = async () => {
-    const movieEndpoint = `${BASE_URL}/movie/${parameter.type}?language=en-US&page=${page}`;
-
-    const response = await fetch(movieEndpoint, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-
-    setMovieData(data.results);
+    setLoading(true);
+    try {
+      const data = await tmdbFetch(`/movie/${parameter.type}`, {
+        language: "en-US",
+        page,
+      });
+      setMovieData(data.results || []);
+      setTotalPages(Math.min(data.total_pages || 1, 500));
+    } catch (error) {
+      console.error("Error fetching see-more movies:", error);
+      setMovieData([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    console.log(`1234`);
     getData();
-  }, [page]);
+  }, [page, parameter.type]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [parameter.type]);
 
   return (
     <SeeMoreContext.Provider
       value={{
         movieData,
         parameter,
+        loading,
         page,
+        totalPages,
+        setPage,
       }}
     >
       {children}

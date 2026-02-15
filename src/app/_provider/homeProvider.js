@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
-import React from "react";
+import { createContext, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
+import { tmdbFetch } from "@/lib/tmdb";
 
 const HomePageContext = createContext(null);
 export const useHomePageContext = () => {
@@ -18,13 +18,13 @@ export const useHomePageContext = () => {
 };
 
 export const HomePageProvider = ({ children }) => {
-  const BASE_URL = "https://api.themoviedb.org/3";
-
-  const ACCESS_TOKEN =
-    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
-
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [nowPlayingLoading, setNowPlayingLoading] = useState(true);
+  const [loadingByType, setLoadingByType] = useState({
+    upcoming: true,
+    popular: true,
+    top_rated: true,
+  });
   const [movieData, setMovieData] = useState({
     upcoming: [],
     popular: [],
@@ -34,45 +34,46 @@ export const HomePageProvider = ({ children }) => {
   const [movieNowPlayingData, setNowPlayingMovieData] = useState([]);
 
   const getData = async (type) => {
-    setLoading(true);
-
-    const movieEndpoint = `${BASE_URL}/movie/${type}?language=en-US&page=1`;
-
-    const response = await fetch(movieEndpoint, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    console.log("MovieList Data", data);
-
-    setMovieData((prev) => ({
+    setLoadingByType((prev) => ({
       ...prev,
-      [type]: data.results,
-    })); // AI
+      [type]: true,
+    }));
 
-    setLoading(false);
+    try {
+      const data = await tmdbFetch(`/movie/${type}`, {
+        language: "en-US",
+        page: 1,
+      });
+
+      setMovieData((prev) => ({
+        ...prev,
+        [type]: data.results || [],
+      }));
+    } catch (error) {
+      console.error(`Error fetching ${type} movies:`, error);
+    } finally {
+      setLoadingByType((prev) => ({
+        ...prev,
+        [type]: false,
+      }));
+    }
   };
 
   const getNowPlayingData = async () => {
-    setLoading(true);
-    const moviesOnTheatreEndpoint = `${BASE_URL}/movie/now_playing?language=en-US&page=1`;
+    setNowPlayingLoading(true);
 
-    const responseNowPlaying = await fetch(moviesOnTheatreEndpoint, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const nowPlayingData = await tmdbFetch("/movie/now_playing", {
+        language: "en-US",
+        page: 1,
+      });
 
-    const nowPlayingData = await responseNowPlaying.json();
-
-    console.log(`HeroSectionData`, nowPlayingData);
-
-    setNowPlayingMovieData(nowPlayingData.results);
-
-    setLoading(false);
+      setNowPlayingMovieData(nowPlayingData.results || []);
+    } catch (error) {
+      console.error("Error fetching now playing movies:", error);
+    } finally {
+      setNowPlayingLoading(false);
+    }
   };
 
   const handleSeeMoreButton = (type) => {
@@ -82,7 +83,8 @@ export const HomePageProvider = ({ children }) => {
   return (
     <HomePageContext.Provider
       value={{
-        loading,
+        loadingByType,
+        nowPlayingLoading,
         movieData,
         movieNowPlayingData,
         getData,
