@@ -4,76 +4,76 @@ import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  GenreCategory,
-  GenreCategories,
-  GenreMenu,
 } from "@/components/ui/dropdown-menu";
 
 import DownArrow from "./_icons/DownArrow";
 import Badge from "./Badge";
+import { tmdbFetch } from "@/lib/tmdb";
 
-const BASE_URL = "https://api.themoviedb.org/3";
-
-const ACCESS_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjI5ZmNiMGRmZTNkMzc2MWFmOWM0YjFjYmEyZTg1NiIsIm5iZiI6MTc1OTcxMTIyNy43OTAwMDAyLCJzdWIiOiI2OGUzMGZmYjFlN2Y3MjAxYjI5Y2FiYmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.M0DQ3rCdsWnMw8U-8g5yGXx-Ga00Jp3p11eRyiSxCuY";
-
-export const Genres = (props) => {
-  const type = { props };
-  const genreCategoryLimit = 27;
-
-  const [genreDataForBadge, setGenre] = useState([]);
+export const Genres = () => {
+  const router = useRouter();
+  const [genreData, setGenreData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getGenreData = async () => {
-    const genreEndpont = `${BASE_URL}/genre/movie/list?language=en`;
-
-    const responseGenreData = await fetch(genreEndpont, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const genreData = await responseGenreData.json();
-    console.log(`GenreData`, genreData);
-    setGenre(genreData.genres);
+    setLoading(true);
+    try {
+      const genreResponse = await tmdbFetch("/genre/movie/list", {
+        language: "en",
+      });
+      setGenreData(genreResponse.genres || []);
+    } catch (error) {
+      console.error("Error fetching genre data:", error);
+      setGenreData([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    console.log(`skibidi`);
     getGenreData();
   }, []);
 
-  {
-    return (
-      <div>
-        <GenreMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex items-center gap-[8px] h-[36px] justify-center border border-[#E4E4E7] dark:border-[#27272A] rounded-md px-4 py-2 hover:bg-[#E4E4E7] dark:hover:bg-[#27272A] cursor-pointer">
-              <DownArrow className="" />
-              <span>Genre</span>
-            </div>
-          </DropdownMenuTrigger>
+  return (
+    <div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="flex items-center gap-2 h-9 justify-center border border-[#E4E4E7] dark:border-[#27272A] rounded-md px-4 py-2 hover:bg-[#E4E4E7] dark:hover:bg-[#27272A] cursor-pointer bg-white dark:bg-[#09090B] text-[14px]">
+            <DownArrow className="" />
+            <span>Genre</span>
+          </button>
+        </DropdownMenuTrigger>
 
-          <DropdownMenuContent className="h-[293px] w-[537px] flex flex-col border dark:border-[#27272A] border-[#E4E4E7] rounded-lg p-[20px] bg-[#FFF] dark:bg-[#09090B]">
-            <DropdownMenuLabel>Genres</DropdownMenuLabel>
-            <DropdownMenuItem>See list of movies by genre</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <GenreCategories>
-              <div className="grid ">
-                {genreDataForBadge
-                  .slice(0, genreCategoryLimit)
-                  .map((genre, index) => {
-                    return <Badge key={index} genreName={genre.name} />;
-                  })}
-              </div>
-            </GenreCategories>
-          </DropdownMenuContent>
-        </GenreMenu>
-      </div>
-    );
-  }
+        <DropdownMenuContent className="max-h-[360px] w-[calc(100vw-2rem)] sm:w-[420px] md:w-[577px] overflow-auto flex flex-col border dark:border-[#27272A] border-[#E4E4E7] rounded-lg p-4 md:p-5 bg-[#FFF] dark:bg-[#09090B]">
+          <DropdownMenuLabel className="text-[22px] md:text-[24px] font-semibold">Genres</DropdownMenuLabel>
+          <p className="px-2 text-sm text-[#71717a]">
+            See lists of movies by genre
+          </p>
+          <DropdownMenuSeparator />
+          {loading ? (
+            <p className="px-2 py-2 text-sm text-[#71717a]">Loading genres...</p>
+          ) : (
+            <div className="flex flex-wrap gap-2 py-2 px-1">
+              {genreData.map((genre) => (
+                <button
+                  key={genre.id}
+                  onClick={() =>
+                    router.push(
+                      `/genre/${genre.id}?name=${encodeURIComponent(genre.name)}`
+                    )
+                  }
+                  className="text-left cursor-pointer"
+                >
+                  <Badge genreName={genre.name} />
+                </button>
+              ))}
+            </div>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
 };

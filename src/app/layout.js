@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { HomePageProvider } from "./_provider/homeProvider";
+import { AppSkeletonThemeProvider } from "./_provider/SkeletonThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,7 @@ export default function RootLayout({ children }) {
       >
         <HomePageProvider>
           <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-            {children}
+            <AppSkeletonThemeProvider>{children}</AppSkeletonThemeProvider>
           </ThemeProvider>
         </HomePageProvider>
       </body>
