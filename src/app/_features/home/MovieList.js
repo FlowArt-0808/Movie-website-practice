@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useHomePageContext } from "@/app/_provider/homeProvider";
 import Skeleton from "react-loading-skeleton";
 import { getPosterUrl } from "@/lib/tmdb";
+import SkeletonCard from "@/app/_components/SkeletonCard";
 export const MovieList = (props) => {
   const { title, type } = props;
 
@@ -43,7 +44,7 @@ export const MovieList = (props) => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-x-8 md:gap-y-7 justify-items-center">
         {isLoading ? (
           Array.from({ length: limit }).map((_, index) => (
-            <Skeleton key={index} className="w-[170px] md:w-[230px] h-[360px] md:h-[439px]" />
+            <SkeletonCard key={index} />
           ))
         ) : (
           specificMovieDataType.slice(0, limit).map((movie, index) => {

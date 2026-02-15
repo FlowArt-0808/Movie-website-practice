@@ -13,6 +13,7 @@ import Badge from "@/app/_components/Badge";
 import Skeleton from "react-loading-skeleton";
 import { getBackdropUrl, getPosterUrl } from "@/lib/tmdb";
 import TrailerModal from "@/app/_components/TrailerModal";
+import SkeletonCard from "@/app/_components/SkeletonCard";
 
 const MovieDetails = () => {
   const movieDetailsLimit = 5;
@@ -198,10 +199,7 @@ const MovieDetails = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-x-8 md:gap-y-7 justify-items-center">
             {loading
               ? Array.from({ length: movieDetailsLimit }).map((_, index) => (
-                  <Skeleton
-                    key={index}
-                    className="w-full h-[320px] sm:h-[372px] md:h-[404px] lg:h-[439px]"
-                  />
+                  <SkeletonCard key={index} />
                 ))
               : recommendationData.slice(0, movieDetailsLimit).map((movie) => (
                   <MovieCard

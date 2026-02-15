@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Header from "@/app/_features/Header";
 import Footer from "@/app/_features/Footer";
 import { MovieCard } from "@/app/_components/MovieCard";
-import Skeleton from "react-loading-skeleton";
+import SkeletonCard from "@/app/_components/SkeletonCard";
 import { tmdbFetch, getPosterUrl } from "@/lib/tmdb";
 
 const SearchPageContent = () => {
@@ -78,7 +78,7 @@ const SearchPageContent = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                 {loading
                   ? Array.from({ length: 5 }).map((_, index) => (
-                      <Skeleton key={index} className="w-full h-[320px] sm:h-[372px] md:h-[404px] lg:h-[439px]" />
+                      <SkeletonCard key={index} />
                     ))
                   : movies.map((movie) => (
                       <MovieCard
