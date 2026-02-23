@@ -1,9 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
-const TrailerModal = ({ isOpen, trailerKey, title, movieId, onClose }) => {
-  const router = useRouter();
+const TrailerModal = ({ isOpen, trailerKey, title, onClose }) => {
 
   if (!isOpen) return null;
 
@@ -16,17 +13,16 @@ const TrailerModal = ({ isOpen, trailerKey, title, movieId, onClose }) => {
         className="w-[92vw] max-w-[820px] bg-black rounded-none overflow-hidden border border-[#27272A]"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="px-4 py-3 md:px-6 md:h-[56px] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div className="px-4 py-3 md:px-6 md:h-[56px] flex items-center justify-between gap-2">
           <p className="text-[18px] md:text-[22px] leading-[24px] md:leading-[28px] font-semibold text-white truncate pr-3">
             {title}
           </p>
           <button
-            onClick={() => {
-              if (movieId) router.push(`/MovieDetails/${movieId}`);
-            }}
-            className="h-8 px-3 md:px-4 rounded-md bg-[#2563EB] text-white text-[11px] md:text-[12px] font-semibold tracking-[0.02em] cursor-pointer hover:bg-[#1D4ED8] whitespace-nowrap self-start sm:self-auto"
+            onClick={onClose}
+            aria-label="Close trailer"
+            className="h-8 w-8 rounded-md border border-[#3F3F46] text-white text-[18px] leading-none cursor-pointer hover:bg-[#27272A] flex items-center justify-center"
           >
-            SEE MOVIE DETAILS
+            X
           </button>
         </div>
         <div className="w-full aspect-video bg-black">

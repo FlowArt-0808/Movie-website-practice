@@ -147,7 +147,6 @@ export const HeroSection = () => {
         isOpen={Boolean(activeTrailer)}
         trailerKey={activeTrailer?.key}
         title={activeTrailer?.title || "Trailer"}
-        movieId={activeTrailer?.movieId}
         onClose={closeTrailer}
       />
     </div>

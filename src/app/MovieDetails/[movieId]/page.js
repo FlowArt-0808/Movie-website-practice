@@ -222,7 +222,6 @@ const MovieDetails = () => {
         isOpen={isTrailerOpen}
         trailerKey={trailerKey}
         title={`${movieIdData.original_title || movieIdData.title || "Movie"}: Trailer`}
-        movieId={movieIdData.id}
         onClose={() => setIsTrailerOpen(false)}
       />
       <Footer />
